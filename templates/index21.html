@@ -4,34 +4,30 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Smart Classroom Management Software - Login</title>
-    <link rel="stylesheet" href="style21.css">
+    <link rel="stylesheet" href="{{ url_for('static', filename='style21.css') }}">
 </head>
 <body>
     <div class="container">
         <h1 class="white-font">Studentsync</h1>
         <h2 class="white-font">Login</h2>
-        <form id="login-form">
+        <form id="login-form" action="/main21" ,method="POST">
             <label for="name">Name:</label>
-            <input type="text" id="name" placeholder="Name">
+            <input type="text" id="name" placeholder="Name" required>
             <br><br>
             <label for="password">Password:</label>
-            <input type="password" id="password" placeholder="Password">
+            <input type="password" id="password" placeholder="Password" required>
             <br><br>
-            <label for="Roll No">Roll No:</label>
-            <input type="text" id="Roll No" placeholder="Roll No">
-            
+            <label for="roll-no">Roll No:</label>
+            <input type="text" id="roll-no" placeholder="Roll No" required>
             <br><br>
-            <button class="white-font" type="submit">
-                <a href="main21.html">Login</a>
-            </button>
+            <button class="white-font" type="submit" >Login</button>
         </form>
     </div>
 
-    <script src="https://cdn.jsdelivr.net/npm/socket.io@2.3.0/dist/socket.io.js"></script>
-    <script>
-        document.getElementById('login-form').addEventListener('submit', event => {
+   <!-- <script>
+        document.getElementById('login-form').addEventListener('submit', function(event) {
             event.preventDefault();
-            const enrollmentNo = document.getElementById('enrollment-no').value;
+            const enrollmentNo = document.getElementById('roll-no').value;
             const password = document.getElementById('password').value;
             const name = document.getElementById('name').value;
 
@@ -43,12 +39,12 @@
             .then(response => response.json())
             .then(data => {
                 if (data.success) {
-                    window.location.href = 'main.html'; 
+                    window.location.href = '/main21.html'; // Redirect to main21.html page
                 } else {
                     alert('Invalid login credentials');
                 }
             });
         });
-    </script>
+    </script> -->
 </body>
 </html>

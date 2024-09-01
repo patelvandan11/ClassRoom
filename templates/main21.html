@@ -4,64 +4,66 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Smart Classroom Management Software</title>
-    <link rel="stylesheet" href="mainstyle21.css">
+    <link rel="stylesheet" href="{{ url_for('static', filename='mainstyle21.css') }}">
 </head>
 <body>
     <nav id="nav-bar">
         <ul>
-            <li><a href="#" class="active"><a href="quiz21.html">Quiz</a></li>
-            <li><a href="#">&nbsp;&nbsp;&nbsp;</a></li>
-            <li><a href="#"><a href="livepolll.html">Livepoll</a></li>
+            <li><a href="{{ url_for('quiz21') }}">Quiz</a></li>
+            <li><a href="{{ url_for('livepolll') }}">Live Poll</a></li>
         </ul>
+        
     </nav>
     <div id="main-content">
         <h1 class="white-font">Smart Classroom Management Software</h1>
-        <br><br>
-        
         <p class="red-font">Welcome to our interactive app!</p>
-        <br><br>
         
-        
-        
-        <select id="resource-select">
-            <option value="">Class</option>
-            <option value="1">class-1</option>
-            <option value="2">class-2</option>
-            <option value="3">class-3</option>
-            <option value="4">class-4</option>
-            <option value="5">class-5</option>
-            <option value="6">class-6</option>
-            <option value="7">class-7</option>
-            <option value="8">class-8</option>
-            <option value="9">class-9</option>
-            <option value="10">class-10</option>
-            <option value="11">class-11</option>
-            <option value="12">class-12</option>
+        <select id="resource-class">
+            <option value="">Select Class</option>
+            <option value="1">Class 1</option>
+            <option value="2">Class 2</option>
+            <option value="3">Class 3</option>
+            <option value="4">Class 4</option>
+            <option value="5">Class 5</option>
+            <option value="6">Class 6</option>
+            <option value="7">Class 7</option>
+            <option value="8">Class 8</option>
+            <option value="9">Class 9</option>
+            <option value="10">Class 10</option>
+            <option value="11">Class 11</option>
+            <option value="12">Class 12</option>
         </select>
 
-        <select id="resource-select">
-            <option value="">Subject</option>
+        <select id="resource-subject">
+            <option value="">Select Subject</option>
             <option value="maths">Maths</option>
-            <option value="Social Science">Social Science</option>
-            <option value="chemistry">chemistry</option>
-            <option value="Physics">Physics</option>
-            <option value="Computer">Computer</option>
-            <option value="English">English</option>
-            <option value="Biology">Biology</option>
-
+            <option value="social_science">Social Science</option>
+            <option value="chemistry">Chemistry</option>
+            <option value="physics">Physics</option>
+            <option value="computer">Computer</option>
+            <option value="english">English</option>
+            <option value="biology">Biology</option>
         </select>
 
-        <select id="resource-select">
-            <option value="">Select a resource</option>
-            <option value="Syllabus">Syllabus</option>
-            <option value="Study Matirial">Study Matirial</option>
-            <option value="Reference">Reference</option>
+        <select id="resource-type">
+            <option value="">Select a Resource</option>
+            <option value="syllabus">Syllabus</option>
+            <option value="study_material">Study Material</option>
+            <option value="reference">Reference</option>
             <option value="books">Books</option>
         </select>
        
         <ul id="student-list"></ul>
         
-        
+        <form id="add-student-form">
+            <label for="name">Name:</label>
+            <input type="text" id="name" placeholder="Name" required>
+            <br><br>
+            <label for="email">Email:</label>
+            <input type="email" id="email" placeholder="Email" required>
+            <br><br>
+            <button type="submit">Add Student</button>
+        </form>
     </div>
 
     <script src="https://cdn.jsdelivr.net/npm/socket.io@2.3.0/dist/socket.io.js"></script>
@@ -69,37 +71,7 @@
         const socket = io();
 
         function initApp() {
-            document.getElementById('checkin-btn').addEventListener('click', () => {
-                fetch('/checkins', {
-                    method: 'POST',
-                    headers: { 'Content-Type': 'application/json' },
-                    body: JSON.stringify({ student_id: 1 })
-                })
-                .then(response => response.json())
-                .then(data => console.log(data));
-            });
-
-            document.getElementById('reports-btn').addEventListener('click', () => {
-                socket.emit('get_reports');
-            });
-
-            socket.on('reports', reports => {
-                console.log(reports);
-            });
-
-            const resourceSelect = document.getElementById('resource-select');
-            resourceSelect.addEventListener('change', () => {
-                const resourceId = resourceSelect.value;
-                fetch('/resources', {
-                    method: 'POST',
-                    headers: { 'Content-Type': 'application/json' },
-                    body: JSON.stringify({ resource_id: resourceId })
-                })
-                .then(response => response.json())
-                .then(data => console.log(data));
-            });
-
-            document.getElementById('add-student-form').addEventListener('submit', event => {
+            document.getElementById('add-student-form').addEventListener('submit', function(event) {
                 event.preventDefault();
                 const name = document.getElementById('name').value;
                 const email = document.getElementById('email').value;
@@ -119,6 +91,43 @@
                         alert('Failed to add student');
                     }
                 });
+            });
+
+            document.getElementById('resource-class').addEventListener('change', function() {
+                const classId = this.value;
+                fetch('/resources', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ class_id: classId })
+                })
+                .then(response => response.json())
+                .then(data => console.log(data));
+            });
+
+            document.getElementById('resource-subject').addEventListener('change', function() {
+                const subjectId = this.value;
+                fetch('/resources', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ subject_id: subjectId })
+                })
+                .then(response => response.json())
+                .then(data => console.log(data));
+            });
+
+            document.getElementById('resource-type').addEventListener('change', function() {
+                const resourceType = this.value;
+                fetch('/resources', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ resource_type: resourceType })
+                })
+                .then(response => response.json())
+                .then(data => console.log(data));
+            });
+
+            socket.on('reports', function(reports) {
+                console.log(reports);
             });
         }
 

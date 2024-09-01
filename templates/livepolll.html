@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Live Poll</title>
-    <link rel="stylesheet" href="livepolll.css">
+    <link rel="stylesheet" href="{{ url_for('static', filename='livepolll.css') }}">
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 </head>
 <body>
@@ -16,7 +16,7 @@
             <label><input type="radio" name="poll" value="Java"> Java</label>
         </div>
         <button class="button" onclick="submitPoll()">Vote</button>
-        <button class="button "onclick="history.back()">Back</button>
+        <button class="button" onclick="history.back()">Back</button>
         <div class="results-container">
             <div class="results" id="results"></div>
             <canvas id="resultsChart"></canvas>

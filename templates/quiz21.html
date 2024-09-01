@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Interactive Quiz</title>
-    <link rel="stylesheet" href="quiz21.css">
+    <link rel="stylesheet" href="{{ url_for('static', filename='quiz21.css') }}">
 </head>
 <body>
 
@@ -30,8 +30,7 @@
             <label><input type="radio" name="q3" value="Iron"> Iron</label>
         </div>
         <button class="button" onclick="submitQuiz()">Submit</button>
-        
-        <button class="button "onclick="history.back()">Back</button>
+        <button class="button" onclick="history.back()">Back</button>
     </div>
     <div class="result" id="result"></div>
     <div class="score" id="score"></div>
@@ -74,18 +73,14 @@
         for (const [question, correctAnswer] of Object.entries(answers)) {
             if (selectedAnswers[question] === correctAnswer) {
                 score++;
-                resultText += '<p>Question ' + question.charAt(1) + ': Correct</p>';
+                resultText += `<p>Question ${question.charAt(1)}: Correct</p>`;
             } else {
-                resultText += '<p>Question ' + question.charAt(1) + ': Incorrect. The correct answer is ' + correctAnswer + '.</p>';
+                resultText += `<p>Question ${question.charAt(1)}: Incorrect. The correct answer is ${correctAnswer}.</p>`;
             }
         }
 
         document.getElementById('result').innerHTML = resultText;
         document.getElementById('score').textContent = 'Your Score: ' + score + '/' + Object.keys(answers).length;
-        const backButton = document.getElementById('back-button');
-backButton.addEventListener('click', () => {
- window.history.back();
-});
         document.getElementById('quiz').style.display = 'none'; 
     }
 </script>
