@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Live Poll</title>
+    <link rel="stylesheet" href="livepolll.css">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+</head>
+<body>
+    <div class="poll-container">
+        <div class="poll-question">Which programming language do you prefer?</div>
+        <div class="poll-options">
+            <label><input type="radio" name="poll" value="JavaScript"> JavaScript</label>
+            <label><input type="radio" name="poll" value="Python"> Python</label>
+            <label><input type="radio" name="poll" value="Java"> Java</label>
+        </div>
+        <button class="button" onclick="submitPoll()">Vote</button>
+        <button class="button "onclick="history.back()">Back</button>
+        <div class="results-container">
+            <div class="results" id="results"></div>
+            <canvas id="resultsChart"></canvas>
+        </div>
+        <div class="feedback" id="feedback"></div>
+    </div>
+
+    <script>
+        let pollResults = {
+            JavaScript: 0,
+            Python: 0,
+            Java: 0
+        };
+
+        function submitPoll() {
+            const options = document.querySelectorAll('input[name="poll"]');
+            let selectedOption = '';
+            options.forEach(option => {
+                if (option.checked) {
+                    selectedOption = option.value;
+                }
+            });
+
+            const feedbackElement = document.getElementById('feedback');
+            if (selectedOption) {
+                pollResults[selectedOption]++;
+                feedbackElement.textContent = ''; 
+                feedbackElement.classList.remove('error');
+                updateResults();
+            } else {
+                feedbackElement.textContent = 'Please select an option before voting.';
+                feedbackElement.classList.add('error');
+            }
+        }
+
+        function updateResults() {
+            const resultsElement = document.getElementById('results');
+            resultsElement.innerHTML = `
+                JavaScript: ${pollResults.JavaScript} votes<br>
+                Python: ${pollResults.Python} votes<br>
+                Java: ${pollResults.Java} votes
+            `;
+
+            const ctx = document.getElementById('resultsChart').getContext('2d');
+            new Chart(ctx, {
+                type: 'bar',
+                data: {
+                    labels: Object.keys(pollResults),
+                    datasets: [{
+                        label: 'Number of Votes',
+                        data: Object.values(pollResults),
+                        backgroundColor: ['#007bff', '#28a745', '#ffc107'],
+                        borderColor: '#ddd',
+                        borderWidth: 1
+                    }]
+                },
+                options: {
+                    scales: {
+                        y: {
+                            beginAtZero: true
+                        }
+                    }
+                }
+            });
+        }
+    </script>
+</body>
+</html>
