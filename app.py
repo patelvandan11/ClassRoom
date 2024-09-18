@@ -4,7 +4,7 @@ from flask_pymongo import PyMongo
 app = Flask(__name__)
 app.config["MONGO_URI"] = "mongodb://localhost:27017/myDatabase"
 mongo = PyMongo(app)
-
+print("hello world")
 @app.route("/", methods=["GET", "POST"])
 def index():
     return render_template("index21.html")
